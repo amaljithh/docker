@@ -11,10 +11,10 @@ EXPOSE 80
 RUN sed -i 's/fastcgi_pass unix:\/var\/run\/php\/php7.4-fpm.sock;/fastcgi_pass unix:\/run\/php\/php7.4-fpm.sock; }/g'\
         /etc/nginx/sites-enabled/default
 RUN sed -i '/fastcgi_pass unix:/s/#//g' /etc/nginx/sites-enabled/default
+RUN sed -i '/location ~ \.php$/s/#//g' /etc/nginx/sites-enabled/default
 RUN sed -i 's/index.html/index.php/g' /etc/nginx/sites-enabled/default
 RUN touch /var/www/html/index.php
 RUN echo "Hello world from php" > /var/www/html/index.php
 
-RUN service php7.4-fpm start
-
-CMD service nginx start 
+ENTRYPOINT service php7.4-fpm start
+ENTRYPOINT service nginx start
